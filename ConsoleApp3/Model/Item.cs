@@ -7,6 +7,7 @@
         public int Vida { get; }
         public int Coste { get; }
 
+        //Metodo Constructor
         public Item(string nombre, int fuerza, int vida, int coste)
         {
             this.Nombre = nombre;

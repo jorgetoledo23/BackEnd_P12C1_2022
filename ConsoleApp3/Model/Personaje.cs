@@ -18,6 +18,8 @@ namespace ConsoleApp.Model
         public int Estamina { get; set; }
         public int Oro { get; set; } = 1000;
 
+        //TODO: Evasion
+
 
         //public int Item1 { get; set; }
         // int Item2 { get; set; }
@@ -39,12 +41,13 @@ namespace ConsoleApp.Model
             Fuerza -= item.Fuerza;
             Vida -= item.Vida;
             Items.Remove(item);
+            Oro += Convert.ToInt32(item.Coste * 0.5); 
         }
 
         public int Golpear(Personaje objetivo)
         {
             objetivo.Vida -= this.Fuerza / 15 + 10;
-            return 1;
+            return objetivo.Vida;
         }
 
     }
