@@ -5,6 +5,8 @@ namespace ConsoleAppEntityFramework.Model
     public class AppDbContext : DbContext
     {
         public DbSet<Producto> tblProductos { get; set; }
+        public DbSet<Cliente> tblClientes { get; set; }
+        public DbSet<Venta> tblVentas { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
