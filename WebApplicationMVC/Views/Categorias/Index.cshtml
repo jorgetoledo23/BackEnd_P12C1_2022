@@ -1,0 +1,21 @@
+﻿@model List<Categoria>
+<p>Administracion de Categorias</p>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Categoria Id</th>
+            <th>Nombre</th>
+            <th>Descripcion</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model){
+            <tr>
+                <td>@item.CategoriaId</td>
+                <td>@item.Nombre</td>
+                <td>@item.Descripcion</td>
+            </tr>
+        }
+    </tbody>
+</table>
