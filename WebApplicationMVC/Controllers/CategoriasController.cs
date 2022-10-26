@@ -17,5 +17,73 @@ namespace WebApplicationMVC.Controllers
             //Mostrar Todas las Categorias
             return View(_context.Categorias.ToList());
         }
+
+        public IActionResult AddCategory()
+        {
+            return View();
+        }
+        public IActionResult EditCategory(int Id)
+        {
+            var Category = _context.Categorias.Find(Id);
+            if(Category == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return View(Category);
+            }
+        }
+
+
+        [HttpPost]
+        public IActionResult AddCategory(Categoria C)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Categorias.Add(C);
+                _context.SaveChanges();
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                ModelState.AddModelError("", "Ocurrio un Error!");
+                return View(C);
+            }
+        }
+
+        [HttpPost]
+        public IActionResult EditCategory(Categoria C)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Categorias.Update(C);
+                _context.SaveChanges();
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                ModelState.AddModelError("", "Ocurrio un Error!");
+                return View(C);
+            }
+        }
+
+        public IActionResult DeleteCategory(int Id)
+        {
+            var Category = _context.Categorias.Find(Id);
+            if (Category == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                _context.Categorias.Remove(Category);
+                _context.SaveChanges();
+                return RedirectToAction(nameof(Index));
+            }
+        }
+
+
+
     }
 }

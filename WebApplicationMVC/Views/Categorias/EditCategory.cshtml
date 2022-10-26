@@ -1,0 +1,36 @@
+﻿@model WebApplicationMVC.Models.Categoria
+
+@{
+    ViewData["Title"] = "EditCategory";
+}
+
+<div class="card text-center">
+    <div class="card-body">
+        <h5 class="card-title">Editar Categoria <strong>@Model.Nombre</strong></h5>
+        <a asp-action="Index"
+           class="btn btn-primary"><i class="fa-solid fa-arrow-left m-2"></i>Volver a las Categorias</a>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="EditCategory" method="POST">
+            <input asp-for="CategoriaId" value="@Model.CategoriaId" type="hidden" />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group mt-3">
+                <input asp-for="Nombre" class="form-control" placeholder="Nombre" value="@Model.Nombre"/>
+                <span asp-validation-for="Nombre" class="text-danger"></span>
+            </div>
+            <div class="form-group mt-3">
+                <input asp-for="Descripcion" class="form-control" placeholder="Descripcion" value="@Model.Descripcion" />
+                <span asp-validation-for="Descripcion" class="text-danger"></span>
+            </div>
+            <div class="form-group mt-3">
+                <input type="submit" value="Guardar Cambios" class="btn btn-primary col-12" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

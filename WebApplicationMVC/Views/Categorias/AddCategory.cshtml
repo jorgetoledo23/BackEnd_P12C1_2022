@@ -1,0 +1,35 @@
+﻿@model WebApplicationMVC.Models.Categoria
+
+@{
+    ViewData["Title"] = "AddCategory";
+}
+
+<div class="card text-center">
+    <div class="card-body">
+        <h5 class="card-title">Agregar Categoria</h5>
+        <a asp-action="Index"
+           class="btn btn-primary"><i class="fa-solid fa-arrow-left m-2"></i>Volver a las Categorias</a>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="AddCategory" method="POST">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group mt-3">
+                <input asp-for="Nombre" class="form-control" placeholder="Nombre" />
+                <span asp-validation-for="Nombre" class="text-danger"></span>
+            </div>
+            <div class="form-group mt-3">
+                <input asp-for="Descripcion" class="form-control" placeholder="Descripcion" />
+                <span asp-validation-for="Descripcion" class="text-danger"></span>
+            </div>
+            <div class="form-group mt-3">
+                <input type="submit" value="Agregar Categoria" class="btn btn-primary col-12" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
