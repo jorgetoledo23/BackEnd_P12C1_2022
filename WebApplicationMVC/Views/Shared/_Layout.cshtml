@@ -35,6 +35,24 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Productos" asp-action="Index">Adm Productos</a>
                         </li>
                     </ul>
+                    @if(User.Identity.IsAuthenticated){
+                        <ul class="navbar-nav d-flex me-5">
+                            
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fa-solid fa-user me-2"></i> @User.Identity.Name
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="#">Ver Perfil</a></li>
+                                    <li><a class="dropdown-item" href="#">Cerrar Sesion</a></li>
+                                </ul>
+                            </li>
+
+                        </ul>
+                    }
+
+
+
                 </div>
             </div>
         </nav>

@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using System.Security.Cryptography;
 using WebApplicationMVC.Models;
 
@@ -13,8 +16,77 @@ namespace WebApplicationMVC.Controllers
             _context = context;
         }
 
+        [HttpGet]
         public IActionResult LoginIn()
         {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> LoginIn(LoginViewModel Lvm)
+        {
+            var usuarios = _context.Usuarios.ToList();
+            if(usuarios.Count == 0)
+            {
+                Usuario U = new Usuario();
+                U.Name = "Administrador";
+                U.Email = "admin@inacap.cl";
+                U.Username = "admin";
+                U.Rol = "SuperAdministrador";
+
+                CreatePasswordHash("123456", out byte[] passwordHash, out byte[] passwordSalt);
+
+                U.PasswordHash = passwordHash;
+                U.PasswordSalt = passwordSalt;
+                _context.Usuarios.Add(U);
+                _context.SaveChanges();
+            }
+
+            //admin
+            var us = _context.Usuarios.Where(u => u.Username.Equals(Lvm.Username)).FirstOrDefault();
+            if(us != null)
+            {
+                //Usuario Encontrado
+                if(VerificarPass(Lvm.Password, us.PasswordHash, us.PasswordSalt))
+                {
+                    //Usuario y Contraseña Correctos!
+                    var Claims = new List<Claim>
+                    {
+                        new Claim(ClaimTypes.Name, us.Name),
+                        new Claim(ClaimTypes.NameIdentifier, Lvm.Username),
+                        new Claim(ClaimTypes.Role, us.Rol)
+                    };
+
+                    //Carnet, Licencia
+                    var identity = new ClaimsIdentity(Claims,
+                        CookieAuthenticationDefaults.AuthenticationScheme);
+
+                    var principal =new ClaimsPrincipal(identity);
+
+                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, 
+                        new AuthenticationProperties { IsPersistent = true }
+                        );
+
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    //Usuario correcto pero contraseña mala
+                    ModelState.AddModelError("", "Contraseña Incorrecta");
+                    return View(Lvm);
+                }
+
+
+            }
+            else
+            {
+                //Usuario No Existe
+                ModelState.AddModelError("", "Usuario no Encontrado!");
+                return View(Lvm);
+            }
+
+
+
             return View();
         }
 
