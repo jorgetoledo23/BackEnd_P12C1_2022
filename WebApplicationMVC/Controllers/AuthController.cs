@@ -91,6 +91,17 @@ namespace WebApplicationMVC.Controllers
         }
 
 
+        public async Task<IActionResult> LogOut()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction(nameof(LoginIn));
+        }
+
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
+
         private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {
             //administrador 123456

@@ -1,8 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using WebApplicationMVC.Models;
 
 namespace WebApplicationMVC.Controllers
 {
+    
     public class CategoriasController : Controller
     {
         private readonly AppDbContext _context;
@@ -12,16 +16,20 @@ namespace WebApplicationMVC.Controllers
             _context = context;
         }
 
+        
         public IActionResult Index()
         {
             //Mostrar Todas las Categorias
             return View(_context.Categorias.ToList());
         }
 
+        [Authorize(Roles = "JefeVenta")]
         public IActionResult AddCategory()
         {
             return View();
         }
+
+        
         public IActionResult EditCategory(int Id)
         {
             var Category = _context.Categorias.Find(Id);
@@ -35,7 +43,7 @@ namespace WebApplicationMVC.Controllers
             }
         }
 
-
+        [Authorize(Roles = "JefeVenta")]
         [HttpPost]
         public IActionResult AddCategory(Categoria C)
         {
