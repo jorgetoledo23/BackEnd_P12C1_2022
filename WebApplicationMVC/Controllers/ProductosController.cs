@@ -13,9 +13,13 @@ namespace WebApplicationMVC.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string Filtro)
         {
-            var productos = await _context.Productos.Include(p=>p.Categoria).ToListAsync();
+            
+             var productos = await _context.Productos
+                .Include(p => p.Categoria)
+                .ToListAsync();
+            
             return View(productos);
         }
 
